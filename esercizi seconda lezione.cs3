@@ -1,0 +1,885 @@
+﻿
+
+
+using System;
+using System.Runtime.CompilerServices;
+
+
+//aggiunta classe VideoGioco
+public class VideoGioco
+{
+    // la classe videogioco contiene il nome, il genere e il voto
+    string nome;
+    string genere;
+  
+    int voto;
+
+    // questo è un costruttore per la classe videogioco ovvero una funzione che chiamiamo ogni volta che creaiamo un nuovo oggetto di questa classe
+    public VideoGioco(string nome, string genere, float voto)
+    {
+        this.nome = nome;
+        this.genere = genere;
+        this.voto = (int) voto;
+    }
+}
+
+internal class Program1
+{
+
+    static List<VideoGioco> archivio = new List<VideoGioco>();
+    static void Main(string[] args)
+    {
+        Console.WriteLine("lista videogiochi");
+
+        // quindi la lista non sarà più di stringhe ma di oggetti della classe VideoGioco
+        List<VideoGioco> videogiochi = new List<VideoGioco>();
+
+        while (true)
+        {
+            //informiamo l'utente delle sue possibilità
+            Console.WriteLine("1: aggiungi");
+            Console.WriteLine("2: visualizza");
+            Console.WriteLine("3: calcola");
+            Console.WriteLine("4: rimuovi");
+            Console.WriteLine("EXIT");
+            // raccogliamo l'input dell'utente
+            string input = Console.ReadLine();
+
+            string scelta = Console.ReadLine();
+
+            switch (scelta)
+            {
+                case "1":
+                    AggiungiVideogioco();
+                    break;
+                case "2":
+                    VisualizzaElencoCompleto();
+                    break;
+                case "3":
+                    FiltraPerGenere();
+                    break;
+                case "4":
+                    FiltraPerPunteggio();
+                    break;
+                case "5":
+                    CalcolaStatistiche();
+                    break;
+                case "6":
+                    RimuoviVideogioco();
+                    break;
+                case "7":
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Scelta non valida.");
+                    break;
+            }
+        }
+    }
+
+    static void AggiungiVideogioco()
+    {
+        VideoGioco nuovoVideogioco = new VideoGioco();
+
+        Console.Write("Inserisci il nome del videogioco: ");
+        nuovoVideogioco.Nome = Console.ReadLine();
+
+        Console.Write("Inserisci il genere del videogioco: ");
+        nuovoVideogioco.Genere = Console.ReadLine();
+
+        bool punteggioValido = false;
+        while (!punteggioValido)
+        {
+            Console.Write("Inserisci il punteggio del videogioco (da 1 a 10): ");
+            try
+            {
+                int punteggio = int.Parse(Console.ReadLine());
+                nuovoVideogioco.Punteggio = punteggio;
+                punteggioValido = true;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Errore! Inserisci un punteggio valido.");
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        archivio.Add(nuovoVideogioco);
+        Console.WriteLine("Videogioco aggiunto con successo!");
+    }
+
+    static void VisualizzaElencoCompleto()
+    {
+        Console.WriteLine("Elenco completo dei Videogiochi:");
+        foreach (var videogioco in archivio)
+        {
+            Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+        }
+    }
+
+    static void FiltraPerGenere()
+    {
+        Console.Write("Inserisci il genere da filtrare: ");
+        string genereFiltro = Console.ReadLine();
+
+        var risultatoFiltro = archivio.Where(v => v.Genere.Equals(genereFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        Console.WriteLine($"Videogiochi con genere '{genereFiltro}':");
+        foreach (var videogioco in risultatoFiltro)
+        {
+            Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+        }
+    }
+
+    static void FiltraPerPunteggio()
+    {
+        bool punteggioValido = false;
+        int punteggioFiltro = 0;
+
+        while (!punteggioValido)
+        {
+            Console.Write("Inserisci il punteggio da filtrare (da 1 a 10): ");
+            try
+            {
+                punteggioFiltro = int.Parse(Console.ReadLine());
+                if (punteggioFiltro < 1 || punteggioFiltro > 10)
+                {
+                    throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                }
+                punteggioValido = true;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Errore! Inserisci un punteggio valido.");
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        var risultatoFiltro = archivio.Where(v => v.Punteggio == punteggioFiltro).ToList();
+
+        Console.WriteLine($"Videogiochi con punteggio '{punteggioFiltro}':");
+        foreach (var videogioco in risultatoFiltro)
+        {
+            Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+        }
+    }
+
+    static void CalcolaStatistiche()
+    {
+        if (archivio.Count == 0)
+        {
+            Console.WriteLine("Non ci sono videogiochi nell'archivio.");
+            return;
+        }
+
+        double mediaPunteggi = archivio.Average(v => v.Punteggio);
+        int numeroVideogiochi = archivio.Count;
+
+        Console.WriteLine($"Numero totale di Videogiochi: {numeroVideogiochi}");
+        Console.WriteLine($"Media dei Punteggi: {mediaPunteggi:F2}");
+    }
+
+    static void RimuoviVideogioco()
+    {
+        Console.Write("Inserisci il nome del videogioco da rimuovere: ");
+        string nomeVideogioco = Console.ReadLine();
+
+        var videogiocoDaRimuovere = archivio.FirstOrDefault(v => v.Nome.Equals(nomeVideogioco, StringComparison.OrdinalIgnoreCase));
+
+        if (videogiocoDaRimuovere != null)
+        {
+            archivio.Remove(videogiocoDaRimuovere);
+            Console.WriteLine("Videogioco rimosso con successo!");
+        }
+        else
+        {
+            Console.WriteLine("Videogioco non trovato nell'archivio.");
+        }
+    }
+}
+}
+Questo programma consente all'utente di gestire l'archivio dei videogio
+
+
+
+
+User
+Immagina di dover gestire un archivio di videogiochi all'interno di un negozio. Implementa un programma in C# che permetta all'utente di eseguire le seguenti operazioni:
+
+Aggiunta di Videogiochi:
+
+Consentire all'utente di aggiungere nuovi videogiochi all'archivio. Ogni videogioco dovrebbe avere un nome, un genere e un punteggio (da 1 a 10).
+Visualizzazione e Filtraggio:
+
+Permettere all'utente di visualizzare l'elenco completo dei videogiochi o di filtrare per genere o punteggio.
+Implementare almeno una funzionalità che coinvolge la manipolazione di una lista e l'applicazione di filtri.
+Statistiche:
+
+Calcolare e mostrare statistiche sull'archivio, come la media dei punteggi e il numero totale di videogiochi.
+Rimozione di Videogiochi:
+
+Consentire all'utente di rimuovere un videogioco specifico dall'archivio.
+ChatGPT
+Ecco un programma in C# che gestisce l'archivio di videogiochi con le funzionalità richieste di aggiunta, visualizzazione, filtraggio, statistiche e rimozione:
+
+csharp
+Copy code
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ArchivioVideogiochi
+{
+    class Videogioco
+    {
+        public string Nome { get; set; }
+        public string Genere { get; set; }
+        public int Punteggio { get; set; }
+    }
+
+    class Program
+    {
+        static List<Videogioco> archivio = new List<Videogioco>();
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.WriteLine("1. Aggiungi Videogioco");
+                Console.WriteLine("2. Visualizza Elenco Completo");
+                Console.WriteLine("3. Filtra per Genere");
+                Console.WriteLine("4. Filtra per Punteggio");
+                Console.WriteLine("5. Statistiche");
+                Console.WriteLine("6. Rimuovi Videogioco");
+                Console.WriteLine("7. Esci");
+                Console.Write("Scelta: ");
+
+                string scelta = Console.ReadLine();
+
+                switch (scelta)
+                {
+                    case "1":
+                        AggiungiVideogioco();
+                        break;
+                    case "2":
+                        VisualizzaElencoCompleto();
+                        break;
+                    case "3":
+                        FiltraPerGenere();
+                        break;
+                    case "4":
+                        FiltraPerPunteggio();
+                        break;
+                    case "5":
+                        CalcolaStatistiche();
+                        break;
+                    case "6":
+                        RimuoviVideogioco();
+                        break;
+                    case "7":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Scelta non valida.");
+                        break;
+                }
+            }
+        }
+
+        static void AggiungiVideogioco()
+        {
+            Videogioco nuovoVideogioco = new Videogioco();
+
+            Console.Write("Inserisci il nome del videogioco: ");
+            nuovoVideogioco.Nome = Console.ReadLine();
+
+            Console.Write("Inserisci il genere del videogioco: ");
+            nuovoVideogioco.Genere = Console.ReadLine();
+
+            bool punteggioValido = false;
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio del videogioco (da 1 a 10): ");
+                try
+                {
+                    nuovoVideogioco.Punteggio = int.Parse(Console.ReadLine());
+                    if (nuovoVideogioco.Punteggio < 1 || nuovoVideogioco.Punteggio > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValido = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Errore! Inserisci un punteggio valido.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            archivio.Add(nuovoVideogioco);
+            Console.WriteLine("Videogioco aggiunto con successo!");
+        }
+
+        static void VisualizzaElencoCompleto()
+        {
+            Console.WriteLine("Elenco completo dei Videogiochi:");
+            foreach (var videogioco in archivio)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void FiltraPerGenere()
+        {
+            Console.Write("Inserisci il genere da filtrare: ");
+            string genereFiltro = Console.ReadLine();
+
+            var risultatoFiltro = archivio.Where(v => v.Genere.Equals(genereFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            Console.WriteLine($"Videogiochi con genere '{genereFiltro}':");
+            foreach (var videogioco in risultatoFiltro)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void FiltraPerPunteggio()
+        {
+            bool punteggioValido = false;
+            int punteggioFiltro = 0;
+
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio da filtrare (da 1 a 10): ");
+                try
+                {
+                    punteggioFiltro = int.Parse(Console.ReadLine());
+                    if (punteggioFiltro < 1 || punteggioFiltro > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValido = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Errore! Inserisci un punteggio valido.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            var risultatoFiltro = archivio.Where(v => v.Punteggio == punteggioFiltro).ToList();
+
+            Console.WriteLine($"Videogiochi con punteggio '{punteggioFiltro}':");
+            foreach (var videogioco in risultatoFiltro)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void CalcolaStatistiche()
+        {
+            if (archivio.Count == 0)
+            {
+                Console.WriteLine("Non ci sono videogiochi nell'archivio.");
+                return;
+            }
+
+            double mediaPunteggi = archivio.Average(v => v.Punteggio);
+            int numeroVideogiochi = archivio.Count;
+
+            Console.WriteLine($"Numero totale di Videogiochi: {numeroVideogiochi}");
+            Console.WriteLine($"Media dei Punteggi: {mediaPunteggi:F2}");
+        }
+
+        static void RimuoviVideogioco()
+        {
+            Console.Write("Inserisci il nome del videogioco da rimuovere: ");
+            string nomeVideogioco = Console.ReadLine();
+
+            var videogiocoDaRimuovere = archivio.FirstOrDefault(v => v.Nome.Equals(nomeVideogioco, StringComparison.OrdinalIgnoreCase));
+
+            if (videogiocoDaRimuovere != null)
+            {
+                archivio.Remove(videogiocoDaRimuovere);
+                Console.WriteLine("Videogioco rimosso con successo!");
+            }
+            else
+            {
+                Console.WriteLine("Videogioco non trovato nell'archivio.");
+            }
+        }
+    }
+}
+Questo programma in C# consente all'utente di gestire l'archivio dei videogiochi consentendo l'aggiunta, la visualizzazione, il filtraggio, il calcolo delle statistiche e la rimozione dei singoli videogiochi.
+
+User
+Immagina di dover gestire un archivio di videogiochi all'interno di un negozio. Implementa un programma in C# che permetta all'utente di eseguire le seguenti operazioni:
+
+Aggiunta di Videogiochi:
+
+Consentire all'utente di aggiungere nuovi videogiochi all'archivio. Ogni videogioco dovrebbe avere un nome, un genere e un punteggio (da 1 a 10).                                                                                                                        Visualizzazione e Filtraggio:
+
+Permettere all'utente di visualizzare l'elenco completo dei videogiochi o di filtrare per genere o punteggio.
+Implementare almeno una funzionalità che coinvolge la manipolazione di una lista e l'applicazione di filtri.
+Statistiche:
+
+Calcolare e mostrare statistiche sull'archivio, come la media dei punteggi e il numero totale di videogiochi.
+Rimozione di Videogiochi:
+
+Consentire all'utente di rimuovere un videogioco specifico dall'archivio.
+ChatGPT
+Ecco un esempio di programma in C# che soddisfa i requisiti richiesti per gestire l'archivio di videogiochi:
+
+csharp
+Copy code
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GestioneVideogiochi
+{
+    class Videogioco
+    {
+        public string Nome { get; set; }
+        public string Genere { get; set; }
+        public int Punteggio { get; set; }
+    }
+
+    class Program
+    {
+        static List<Videogioco> archivio = new List<Videogioco>();
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.WriteLine("1. Aggiungi Videogioco");
+                Console.WriteLine("2. Visualizza Elenco Completo");
+                Console.WriteLine("3. Filtra per Genere");
+                Console.WriteLine("4. Filtra per Punteggio");
+                Console.WriteLine("5. Statistiche");
+                Console.WriteLine("6. Rimuovi Videogioco");
+                Console.WriteLine("7. Esci");
+                Console.Write("Scelta: ");
+
+                string scelta = Console.ReadLine();
+
+                switch (scelta)
+                {
+                    case "1":
+                        AggiungiVideogioco();
+                        break;
+                    case "2":
+                        VisualizzaElencoCompleto();
+                        break;
+                    case "3":
+                        FiltraPerGenere();
+                        break;
+                    case "4":
+                        FiltraPerPunteggio();
+                        break;
+                    case "5":
+                        CalcolaStatistiche();
+                        break;
+                    case "6":
+                        RimuoviVideogioco();
+                        break;
+                    case "7":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Scelta non valida.");
+                        break;
+                }
+            }
+        }
+
+        static void AggiungiVideogioco()
+        {
+            Videogioco nuovoVideogioco = new Videogioco();
+
+            Console.Write("Inserisci il nome del videogioco: ");
+            nuovoVideogioco.Nome = Console.ReadLine();
+
+            Console.Write("Inserisci il genere del videogioco: ");
+            nuovoVideogioco.Genere = Console.ReadLine();
+
+            bool punteggioValido = false;
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio del videogioco (da 1 a 10): ");
+                try
+                {
+                    nuovoVideogioco.Punteggio = int.Parse(Console.ReadLine());
+                    if (nuovoVideogioco.Punteggio < 1 || nuovoVideogioco.Punteggio > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValido = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Errore! Inserisci un punteggio valido.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            archivio.Add(nuovoVideogioco);
+            Console.WriteLine("Videogioco aggiunto con successo!");
+        }
+
+        static void VisualizzaElencoCompleto()
+        {
+            Console.WriteLine("Elenco completo dei Videogiochi:");
+            foreach (var videogioco in archivio)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void FiltraPerGenere()
+        {
+            Console.Write("Inserisci il genere da filtrare: ");
+            string genereFiltro = Console.ReadLine();
+
+            var risultatoFiltro = archivio.Where(v => v.Genere.Equals(genereFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            Console.WriteLine($"Videogiochi con genere '{genereFiltro}':");
+            foreach (var videogioco in risultatoFiltro)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void FiltraPerPunteggio()
+        {
+            bool punteggioValido = false;
+            int punteggioFiltro = 0;
+
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio da filtrare (da 1 a 10): ");
+                try
+                {
+                    punteggioFiltro = int.Parse(Console.ReadLine());
+                    if (punteggioFiltro < 1 || punteggioFiltro > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValido = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Errore! Inserisci un punteggio valido.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            var risultatoFiltro = archivio.Where(v => v.Punteggio == punteggioFiltro).ToList();
+
+            Console.WriteLine($"Videogiochi con punteggio '{punteggioFiltro}':");
+            foreach (var videogioco in risultatoFiltro)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void CalcolaStatistiche()
+        {
+            if (archivio.Count == 0)
+            {
+                Console.WriteLine("Non ci sono videogiochi nell'archivio.");
+                return;
+            }
+
+            double mediaPunteggi = archivio.Average(v => v.Punteggio);
+            int numeroVideogiochi = archivio.Count;
+
+            Console.WriteLine($"Numero totale di Videogiochi: {numeroVideogiochi}");
+            Console.WriteLine($"Media dei Punteggi: {mediaPunteggi:F2}");
+        }
+
+        static void RimuoviVideogioco()
+        {
+            Console.Write("Inserisci il nome del videogioco da rimuovere: ");
+            string nomeVideogioco = Console.ReadLine();
+
+            var videogiocoDaRimuovere = archivio.FirstOrDefault(v => v.Nome.Equals(nomeVideogioco, StringComparison.OrdinalIgnoreCase));
+
+            if (videogiocoDaRimuovere != null)
+            {
+                archivio.Remove(videogiocoDaRimuovere);
+                Console.WriteLine("Videogioco rimosso con successo!");
+            }
+            else
+            {
+                Console.WriteLine("Videogioco non trovato nell'archivio.");
+            }
+        }
+    }
+}
+Questo programma consente all'utente di gestire l'archivio dei videogiochi permettendo l'aggiunta, la visualizzazione, il filtraggio, il calcolo delle statistiche e la rimozione dei singoli videogiochi.
+
+User
+Permettere all'utente di visualizzare l'elenco completo dei videogiochi o di filtrare per genere o punteggio.
+Implementare almeno una funzionalità che coinvolge la manipolazione di una lista e l'applicazione di filtri.
+ChatGPT
+Certamente! Di seguito trovi un esempio di programma che consente all'utente di visualizzare l'elenco completo dei videogiochi, nonché di filtrare per genere o punteggio:
+
+csharp
+Copy code
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GestioneVideogiochi
+{
+    class Videogioco
+    {
+        public string Nome { get; set; }
+        public string Genere { get; set; }
+        public int Punteggio { get; set; }
+    }
+
+    class Program
+    {
+        static List<Videogioco> archivio = new List<Videogioco>();
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.WriteLine("1. Aggiungi Videogioco");
+                Console.WriteLine("2. Visualizza Elenco Completo");
+                Console.WriteLine("3. Filtra per Genere");
+                Console.WriteLine("4. Filtra per Punteggio");
+                Console.WriteLine("5. Esci");
+                Console.Write("Scelta: ");
+
+                string scelta = Console.ReadLine();
+
+                switch (scelta)
+                {
+                    case "1":
+                        AggiungiVideogioco();
+                        break;
+                    case "2":
+                        VisualizzaElencoCompleto();
+                        break;
+                    case "3":
+                        FiltraPerGenere();
+                        break;
+                    case "4":
+                        FiltraPerPunteggio();
+                        break;
+                    case "5":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Scelta non valida.");
+                        break;
+                }
+            }
+        }
+
+        static void AggiungiVideogioco()
+        {
+            Videogioco nuovoVideogioco = new Videogioco();
+
+            Console.Write("Inserisci il nome del videogioco: ");
+            nuovoVideogioco.Nome = Console.ReadLine();
+
+            Console.Write("Inserisci il genere del videogioco: ");
+            nuovoVideogioco.Genere = Console.ReadLine();
+
+            bool punteggioValido = false;
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio del videogioco (da 1 a 10): ");
+                try
+                {
+                    nuovoVideogioco.Punteggio = int.Parse(Console.ReadLine());
+                    if (nuovoVideogioco.Punteggio < 1 || nuovoVideogioco.Punteggio > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValido = true;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Errore! Inserisci un punteggio valido.");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            archivio.Add(nuovoVideogioco);
+            Console.WriteLine("Videogioco aggiunto con successo!");
+        }
+
+        static void VisualizzaElencoCompleto()
+        {
+            Console.WriteLine("Elenco completo dei Videogiochi:");
+            foreach (var videogioco in archivio)
+            {
+                Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+            }
+        }
+
+        static void FiltraPerGenere()
+        {
+            Console.Write("Inserisci il genere da filtrare: ");
+            string genereFiltro = Console.ReadLine();
+
+            var risultatoFiltro = archivio.Where(v => v.Genere.Equals(genereFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (risultatoFiltro.Any())
+            {
+                Console.WriteLine($"Videogiochi con genere '{genereFiltro}':");
+                foreach (var videogioco in risultatoFiltro)
+                {
+                    Console.WriteLine($"Nome: {videogioco.Nome}, Genere: {videogioco.Genere}, Punteggio: {videogioco.Punteggio}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Nessun videogioco trovato con il genere '{genereFiltro}'.");
+            }
+        }
+
+        static void FiltraPerPunteggio()
+        {
+            bool punteggioValido = false;
+            int punteggioFiltro = 0;
+
+            while (!punteggioValido)
+            {
+                Console.Write("Inserisci il punteggio da filtrare (da 1 a 10): ");
+                try
+                {
+                    punteggioFiltro = int.Parse(Console.ReadLine());
+                    if (punteggioFiltro < 1 || punteggioFiltro > 10)
+                    {
+                        throw new ArgumentOutOfRangeException("Il punteggio deve essere compreso tra 1 e 10.");
+                    }
+                    punteggioValid
+
+
+
+
+
+
+
+
+
+
+            //controlliamo se l'input è compatibile con una delle azioni possibili
+            if (input == "1")
+            {
+                Console.WriteLine("Scrivi le informazioni nel seguente ordine: nome, genere, punteggio del videogioco che vuoi aggiungere");
+                // raccogliamo i dati che ci servono per creare un oggetto della classe VideoGioco
+                string nome = Console.ReadLine();
+                string genere = Console.ReadLine();
+                int punteggio = Convert.ToInt32(Console.ReadLine());
+                // creiamo un nuovo oggetto della classe VideoGioco e grazie al suo costruttore gli assegnamo le sue caratteristiche nome, genere, voto
+                VideoGioco new_videogioco = new VideoGioco (nome, genere, punteggio);
+                // usiamo la funzione aggiungi per aggiunger new_videogioco alla lista di videogiochi.
+             
+              aggiungi (videogiochi, new_videogioco);
+
+                bool punteggiovalido = false;
+                while (!punteggiovalido) ;
+                Console.WriteLine("inserisci il punteggio da 1 a 10");
+                try
+                {
+
+                    punteggiovalido = true;
+
+                }
+                catch (Exception) 
+                { 
+                Console.WriteLine("errore inserisci punteggio valido");
+                }
+                videogiochi.Add (new_videogioco);
+                Console.WriteLine("videogioco aggiunto con successo");
+            }
+            else if (input == "2")
+            {
+
+                Console.WriteLine("ho rimosso un videogioco dalla lista");
+            }
+            else if (input == "0")
+            {
+                Console.WriteLine("elenco e filtro videogiochi");
+            }
+            else if (input == "3")
+            {
+                Console.WriteLine("media dei npunteggi e totale dei giochi");
+            }
+            else if (input == "EXIT")
+            {
+                // se l'utenete digita EXIT il programma deve uscire dal ciclo e quindi break ;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("inserisci correttamente il valore dell'azione che vuoi effettuare");
+            }
+        }
+    }
+
+    private static void aggiungi(List<VideoGioco> videogiochi, VideoGioco new_videogioco)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+
+
+
+//        }
+//    }
+
+//    static void calcola(List<string> videogiochi, string mediapunteggi, string totgiochi);
+//    {
+//        videogiochi.calcola(mediapunteggi, totgiochi);
+//    }
+
+// funzione aggiungi per aggiungere un oggetto new_gioco alla liste videogiochi
+//static void aggiungi(List<VideoGioco> videogiochi, VideoGioco new_gioco)
+//{
+//    videogiochi.Add(new_gioco);
+//    }
+
+//    static void visualizza(List<string> videogiochi, string elencogiochi, string filtro);
+//    {
+
+//        foreach (string s in videogiochi)
+//        {
+//            Console.WriteLine(s);
+//    static void rimuovi(List<string> videogiochi, string rimuovigioco);
+//    {
+//        videogiochi.Remove(rimuovigioco);
+//    }
+//}
