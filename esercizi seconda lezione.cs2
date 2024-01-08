@@ -1,0 +1,136 @@
+﻿
+
+
+using System.Runtime.CompilerServices;
+
+
+//aggiunta classe VideoGioco
+public class VideoGioco
+{
+    // la classe videogioco contiene il nome, il genere e il voto
+    string nome;
+    string genere;
+    string punteggio;
+    int voto;
+
+    // questo è un costruttore per la classe videogioco ovvero una funzione che chiamiamo ogni volta che creaiamo un nuovo oggetto di questa classe
+    public VideoGioco(string nome, string genere, float voto)
+    {
+        this.nome = nome;
+        this.genere = genere;
+        this.voto = (int) voto;
+    }
+}
+
+internal class Program1
+{
+
+    static List<VideoGioco> archivio = new List<VideoGioco>();
+    static void Main(string[] args)
+    {
+        Console.WriteLine("lista videogiochi");
+
+        // quindi la lista non sarà più di stringhe ma di oggetti della classe VideoGioco
+        List<VideoGioco> videogiochi = new List<VideoGioco>();
+
+        while (true)
+        {
+            //informiamo l'utente delle sue possibilità
+            Console.WriteLine("1: aggiungi");
+            Console.WriteLine("2: visualizza");
+            Console.WriteLine("3: calcola");
+            Console.WriteLine("4: rimuovi");
+            Console.WriteLine("EXIT");
+            // raccogliamo l'input dell'utente
+            string input = Console.ReadLine();
+
+            //controlliamo se l'input è compatibile con una delle azioni possibili
+            if (input == "1")
+            {
+                Console.WriteLine("Scrivi le informazioni nel seguente ordine: nome, genere, punteggio del videogioco che vuoi aggiungere");
+                // raccogliamo i dati che ci servono per creare un oggetto della classe VideoGioco
+                string nome = Console.ReadLine();
+                string genere = Console.ReadLine();
+                int punteggio = Convert.ToInt32(Console.ReadLine());
+                // creiamo un nuovo oggetto della classe VideoGioco e grazie al suo costruttore gli assegnamo le sue caratteristiche nome, genere, voto
+                VideoGioco new_videogioco = new VideoGioco(nome, genere, punteggio);
+                // usiamo la funzione aggiungi per aggiunger new_videogioco alla lista di videogiochi.
+             
+              aggiungi (videogiochi, new_videogioco);
+
+                bool punteggiovalido = false;
+                while (!punteggiovalido) ;
+                Console.WriteLine("inserisci il punteggio da 1 a 10");
+                try
+                {
+
+                    punteggiovalido = true;
+
+                }
+                catch (Exception) 
+                { 
+                Console.WriteLine("errore inserisci punteggio valido");
+                }
+                videogiochi.Add (new_videogioco);
+                Console.WriteLine("videogioco aggiunto con successo");
+            }
+            else if (input == "2")
+            {
+
+                Console.WriteLine("ho rimosso un videogioco dalla lista");
+            }
+            else if (input == "0")
+            {
+                Console.WriteLine("elenco e filtro videogiochi");
+            }
+            else if (input == "3")
+            {
+                Console.WriteLine("media dei npunteggi e totale dei giochi");
+            }
+            else if (input == "EXIT")
+            {
+                // se l'utenete digita EXIT il programma deve uscire dal ciclo e quindi break ;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("inserisci correttamente il valore dell'azione che vuoi effettuare");
+            }
+        }
+    }
+
+    private static void aggiungi(List<VideoGioco> videogiochi, VideoGioco new_videogioco)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+
+
+
+// funzione aggiungi per aggiungere un oggetto new_gioco alla liste videogiochi
+//static void aggiungi(List<VideoGioco> videogiochi, VideoGioco new_gioco)
+//{
+//    videogiochi.Add(new_gioco);
+//    }
+
+//    static void visualizza(List<string> videogiochi, string elencogiochi, string filtro);
+//    {
+
+//        foreach (string s in videogiochi)
+//        {
+//            Console.WriteLine(s);
+//        }
+//    }
+
+//    static void calcola(List<string> videogiochi, string mediapunteggi, string totgiochi);
+//    {
+//        videogiochi.calcola(mediapunteggi, totgiochi);
+//    }
+
+//    static void rimuovi(List<string> videogiochi, string rimuovigioco);
+//    {
+//        videogiochi.Remove(rimuovigioco);
+//    }
+//}
