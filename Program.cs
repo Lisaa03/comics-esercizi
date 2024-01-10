@@ -1,74 +1,63 @@
 ﻿
 
-using System.Text.RegularExpressions;
-internal class Program
+//using System;
+
+//class Program
+//{
+//    static void Main(string[] args)
+//    {
+//        int[] numeri = { 8, 2, 5, 10, 9, 7, 6, 4, 1, 3 };
+
+//        //Bubble Sort Algirithm logic
+//        for (int i = 0; i < (numeri.Length - 1); i++)
+//        {
+//            for (int j = 0; j < (numeri.Length - (1 + i)); j++)
+//            {
+//                var lowerNumber = 0;
+//                if (numeri[j] > numeri[j + 1])
+//                {
+//                    lowerNumber = numeri[j + 1];
+//                    numeri[j + 1] = numeri[j];
+//                    numeri[j] = lowerNumber;
+//                }
+//            }
+//        }
+//        // Print Logic after Sort
+//        Console.WriteLine("stampa numeri ordinati:");
+//        for (int i = 0; i <= (numeri.Length - 1); i++)
+//        {
+//            Console.Write(numeri[i]);
+//            Console.Write("\n");
+//        }
+//        Console.ReadLine();
+//    }
+//}
+
+//int [] numeri ={ 2,7,9,4,6,1};
+
+//if(2 < 4/7 /6 /9/1)
+//{
+//    Console.WriteLine("2");
+//}
+
+
+void bubblesort (int[] arr)
 {
-    static void Main(string[] args)
+    int tap;
+    for (int i = 0; 1 < arr.Length - i; i++)
     {
-        Console.WriteLine("lista videogiochi");
-
-
-        List<string> videogiochi = new List<string>();
-
-        while (true)
+        if (arr[i] > arr[i+1]) 
         {
-            Console.WriteLine("aggiungi");
-            Console.WriteLine("visualizza");
-            Console.WriteLine("calcola");
-            Console.WriteLine("rimuovi");
-        }
-
-        if (input == "1")
-        {
-            Console.WriteLine("ho aggiunto nome,genere e punteggio");
-        }
-        else if (input == "2")
-        {
-            Console.WriteLine("ho rimosso un videogioco dalla lista");
-        }
-        else if (input == "0")
-        {
-            Console.WriteLine("elenco e filtro videogiochi");
-        }
-        else if (input == "3")
-        {
-            Console.WriteLine("media dei npunteggi e totale dei giochi");
-        }
-        else
-        {
-            Console.WriteLine("errore");
-        }
-
-        string nome, genere, punteggio = Console.ReadLine();
-        string mediapunteggi, totgiochi = Console.ReadLine();
-        string rimuovigioco = Console.ReadLine();
-
-
-
-
-
-
-        static void aggiungi(List<string> videogiochi, string nome, string genere, int punteggio);
-        {
-            videogiochi.Add(nome, genere, punteggio);
-        }
-
-        static void visualizza(List<string> videogiochi, string elencogiochi, string filtro);
-        {
-            foreach (string s in videogiochi)
-            {
-                Console.WriteLine(s);
-            }
-        }
-
-        static void calcola(List<string> videogiochi, string mediapunteggi, string totgiochi);
-        {
-            videogiochi.calcola(mediapunteggi, totgiochi);
-        }
-
-        static void rimuovi(List<string> videogiochi, string rimuovigioco);
-        {
-            videogiochi.Remove(rimuovigioco);
-        }
+            tap = arr[i];
+            arr[i] = arr[i+ 1];
+            arr[i+1] = tap;
+            bubblesort(arr);
+       }
     }
 }
+
+int[] arr = { 1, 5, 3, 4, 2 };
+
+bubblesort(arr);
+foreach (int i in arr)
+    Console.WriteLine(i);
