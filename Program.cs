@@ -1,4 +1,61 @@
 ﻿
+//BubbleSort
+
+//esempio 1
+//static void BubbleSort(int[] arr)
+//{
+////Per scoprire quanti elementi ha un array,usa la proprieta Length :
+//    int n = arr.Length;
+//    for (int i = 0; i < n - 1; i++)
+//    {
+//        for (int j = 0; j < n - i - 1; j++)
+//        {
+//            // Scambia gli elementi se sono nell'ordine sbagliato
+//            if (arr[j] > arr[j + 1])
+//            {
+//                int temp = arr[j];
+//                arr[j] = arr[j + 1];
+//                arr[j + 1] = temp;
+//                  bubblesort(arr)
+//            }
+//       }
+//int[] arr = { 1, 5, 3, 4, 2 };
+
+//bubblesort(arr);
+//foreach (int i in arr)
+//    Console.WriteLine(i);
+
+
+
+//esempio 2
+
+//using System;
+
+//void bubblesort(int[] arr)
+//{
+//    int tap;
+//    for (int i = 0; 1 < arr.Length - i; i++)
+//    {
+//        if (arr[i] > arr[i + 1])
+//        {
+//            tap = arr[i];
+//            arr[i] = arr[i + 1];
+//            arr[i + 1] = tap;
+//            bubblesort(arr);
+//        }
+//    }
+//}
+
+//int[] arr = { 1, 5, 3, 4, 2 };
+
+//bubblesort(arr);
+//foreach (int i in arr)
+//    Console.WriteLine(i);
+
+
+
+
+//esempio 3
 
 //using System;
 
@@ -41,23 +98,36 @@
 //}
 
 
-void bubblesort (int[] arr)
+
+
+//Margesort
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp2
 {
-    int tap;
-    for (int i = 0; 1 < arr.Length - i; i++)
+    internal class Program
     {
-        if (arr[i] > arr[i+1]) 
+        static void Main(string[] args)
         {
-            tap = arr[i];
-            arr[i] = arr[i+ 1];
-            arr[i+1] = tap;
-            bubblesort(arr);
-       }
+            int[] numeri = { 5, 7, 3, 8, 6, 1 };
+
+        }
     }
 }
 
-int[] arr = { 1, 5, 3, 4, 2 };
 
-bubblesort(arr);
-foreach (int i in arr)
-    Console.WriteLine(i);
+
+
+//// Scambia gli elementi se sono nell'ordine sbagliato
+//if (arr[j] > arr[j + 1])
+//{
+//    int temp = arr[j];
+//    arr[j] = arr[j + 1];
+//    arr[j + 1] = temp;
+//}
+
+
+
