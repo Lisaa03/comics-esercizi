@@ -1,0 +1,107 @@
+00SWAP - Esercizio di Scambio di Variabili
+Scrivere un programma interattivo che richieda all'utente l'inserimento di due variabili, ne visualizzi i valori associati ai rispettivi nomi e 
+successivamente scambi il valore tra le due variabili. Infine, stampare i nuovi valori associati ai nomi delle variabili 
+
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Richiedi all'utente di inserire i valori delle due variabili
+        Console.Write("Inserisci il valore della prima variabile: ");
+        string var1 = Console.ReadLine();
+
+        Console.Write("Inserisci il valore della seconda variabile: ");
+        string var2 = Console.ReadLine();
+
+        // Visualizza i valori iniziali
+        Console.WriteLine($"Valore iniziale di var1: {var1}");
+        Console.WriteLine($"Valore iniziale di var2: {var2}");
+
+        // Scambia i valori delle due variabili
+        string temp = var1;
+        var1 = var2;
+        var2 = temp;
+
+        // Visualizza i valori dopo lo scambio
+        Console.WriteLine($"Valore di var1 dopo lo scambio: {var1}");
+        Console.WriteLine($"Valore di var2 dopo lo scambio: {var2}");
+    }
+}
+
+
+02AREA CERCHIO - Calcolare l'Area di un Cerchio
+Scrivere un programma interattivo che richieda all'utente di inserire il raggio di un cerchio. Calcola quindi l'area del cerchio utilizzando la 
+formula dell'area (A = π * r^2) e stampa il risultato.
+Assicurati di utilizzare la costante Math.PI per ottenere il valore di π.
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Richiedi all'utente di inserire il raggio del cerchio
+        Console.Write("Inserisci il raggio del cerchio: ");
+        string input = Console.ReadLine();
+
+        // Converti l'input dell'utente in un numero decimale
+        if (double.TryParse(input, out double raggio))
+        {
+            // Calcola l'area del cerchio
+            double area = Math.PI * Math.Pow(raggio, 2);
+
+            // Stampa il risultato
+            Console.WriteLine($"L'area del cerchio con raggio {raggio} è: {area}");
+        }
+        else
+        {
+            Console.WriteLine("inserisci un valore numerico valido per il raggio.");
+        }
+    }
+}
+
+
+
+03FORMULA - Esercizio con Formula
+Scrivere un programma interattivo che richieda all'utente di inserire quattro variabili. Successivamente, determina se il prodotto della somma 
+delle prime due variabili e della differenza tra la terza e la quarta variabile è uguale a 42. Stampa il risultato e indica se il valore è pari o dispari
+Cerca di risolvere l'esercizio senza utilizzare le strutture di controllo (if, else). Spiega come hai gestito questa parte nel codice.
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Richiedi all'utente di inserire le quattro variabili
+        Console.Write("Inserisci il valore della prima variabile: ");
+        int var1 = int.Parse(Console.ReadLine());
+
+        Console.Write("Inserisci il valore della seconda variabile: ");
+        int var2 = int.Parse(Console.ReadLine());
+
+        Console.Write("Inserisci il valore della terza variabile: ");
+        int var3 = int.Parse(Console.ReadLine());
+
+        Console.Write("Inserisci il valore della quarta variabile: ");
+        int var4 = int.Parse(Console.ReadLine());
+
+        // Calcola il prodotto della somma delle prime due variabili e della differenza tra la terza e la quarta variabile
+        int somma = var1 + var2;
+        int diff = var3 - var4;
+        int risultato = somma * diff;
+
+        // Determina se il risultato è uguale a 42
+        string numero = (risultato == 42).ToString();
+
+        // Determina se il risultato è pari o dispari
+        string numro = (risultato % 2 == 0) ? "pari" : "dispari";
+
+        // Stampa il risultato e indica se il valore è pari o dispari
+        Console.WriteLine($"Il risultato del calcolo è: {risultato}");
+        Console.WriteLine($"Il risultato è uguale a 42? {numero}");
+        Console.WriteLine($"Il risultato è {numero}");
+    }
