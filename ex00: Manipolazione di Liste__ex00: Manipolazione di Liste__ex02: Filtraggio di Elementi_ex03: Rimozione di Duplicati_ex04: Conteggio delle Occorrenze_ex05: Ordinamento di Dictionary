@@ -1,0 +1,319 @@
+//ex00: Manipolazione di Liste
+//Scrivi un programma che utilizzi una lista per gestire un insieme di numeri interi.
+//Consentire all'utente di aggiungere, rimuovere e visualizzare gli elementi della lista.
+//Implementa un menu interattivo per facilitare l'interazione con la lista.
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Xml.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        List<int> numeri = new List<int>();
+
+        while (true)
+        {
+            // Stampa il menu
+            Console.WriteLine("Menu:");
+            Console.WriteLine("1. Aggiungi numero");
+            Console.WriteLine("2. Rimuovi numero");
+            Console.WriteLine("3. Visualizza numeri");
+            Console.WriteLine("4. Esci");
+
+            // Chiedi all'utente di scegliere un'opzione
+            Console.Write("Scegli un'opzione: ");
+            string scelta = Console.ReadLine();
+
+            switch (scelta)
+            {
+                case "1":
+                    AggiungiNumero(numeri);
+                    break;
+                case "2":
+                    RimuoviNumero(numeri);
+                    break;
+                case "3":
+                    VisualizzaNumeri(numeri);
+                    break;
+                case "4":
+                    Console.WriteLine("Arrivederci!");
+                    return;
+                default:
+                    Console.WriteLine("Opzione non valida. Riprova.");
+                    break;
+            }
+
+            Console.WriteLine(); // Aggiungi una riga vuota per migliorare la leggibilità
+        }
+    }
+
+    static void AggiungiNumero(List<int> numeri)
+    {
+        Console.Write("Inserisci un numero intero: ");
+        int numero = int.Parse(Console.ReadLine());
+        numeri.Add(numero);
+        Console.WriteLine("Numero aggiunto con successo.");
+    }
+
+    static void RimuoviNumero(List<int> numeri)
+    {
+        if (numeri.Count == 0)
+        {
+            Console.WriteLine("La lista è vuota. Non ci sono numeri da rimuovere.");
+            return;
+        }
+
+        Console.Write("Inserisci l'indice del numero da rimuovere: ");
+        int indice;
+        while (!int.TryParse(Console.ReadLine(), out indice) || indice < 0 || indice >= numeri.Count)
+        {
+            Console.WriteLine("Indice non valido. Riprova.");
+            Console.Write("Inserisci l'indice del numero da rimuovere: ");
+        }
+
+        numeri.RemoveAt(indice);
+        Console.WriteLine("Numero rimosso con successo.");
+    }
+
+    static void VisualizzaNumeri(List<int> numeri)
+    {
+        if (numeri.Count == 0)
+        {
+            Console.WriteLine("La lista è vuota. Non ci sono numeri da visualizzare.");
+            return;
+        }
+
+        Console.WriteLine("Numeri nella lista:");
+        for (int i = 0; i < numeri.Count; i++)
+        {
+            Console.WriteLine($"[{i}] {numeri[i]}");
+        }
+    }
+}
+
+
+
+C
+//Crea un dizionario che associ nomi di città a codici postali.
+//Chiedi all'utente di inserire il nome di una città e visualizza il corrispondente codice postale. Gestisci il caso in cui la città inserita non sia presente nel dizionario.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Creazione del dizionario città -> codice postale
+        Dictionary<string, string> dizionarioCodiciPostali = new Dictionary<string, string>()
+        {
+            {"Roma", "00100"},
+            {"Milano", "20100"},
+            {"Napoli", "80100"},
+            {"Firenze", "50100"},
+            // Aggiungi altre città e codici postali se necessario
+        };
+
+        // Chiedi all'utente di inserire il nome di una città
+        Console.Write("Inserisci il nome di una città: ");
+        string citta = Console.ReadLine();
+
+        // Verifica se la città è presente nel dizionario e visualizza il corrispondente codice postale
+        if (dizionarioCodiciPostali.ContainsKey(citta))
+        {
+            string codicePostale = dizionarioCodiciPostali[citta];
+            Console.WriteLine($"Il codice postale di {citta} è: {codicePostale}");
+        }
+        else
+        {
+            Console.WriteLine($"La città {citta} non è presente nel dizionario.");
+        }
+    }
+}
+
+
+//ex02: Filtraggio di Elementi
+//Scrivi un programma che utilizzi una lista di stringhe contenenti nomi di persone.
+//Chiedi all'utente di inserire una lettera e filtra la lista mostrando solo i nomi che iniziano con quella lettera.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Creazione della lista di nomi di persone
+        List<string> nomiPersone = new List<string>()
+        {
+            "Marco", "Giulia", "Luca", "Anna", "Simone", "Elisa"
+        };
+
+        // Chiedi all'utente di inserire una lettera
+        Console.Write("Inserisci una lettera per filtrare i nomi: ");
+        char lettera = char.Parse(Console.ReadLine());
+
+        // Filtra la lista mostrando solo i nomi che iniziano con la lettera inserita
+        List<string> nomiFiltrati = FiltraNomiPerLettera(nomiPersone, lettera);
+
+        // Stampa i nomi filtrati
+        Console.WriteLine($"Nomi che iniziano con la lettera '{lettera}':");
+        foreach (string nome in nomiFiltrati)
+        {
+            Console.WriteLine(nome);
+        }
+    }
+
+    static List<string> FiltraNomiPerLettera(List<string> nomi, char lettera)
+    {
+        List<string> nomiFiltrati = new List<string>();
+
+        foreach (string nome in nomi)
+        {
+            if (nome.StartsWith(lettera.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                nomiFiltrati.Add(nome);
+            }
+        }
+
+        return nomiFiltrati;
+    }
+}
+
+
+//ex03: Rimozione di Duplicati
+//Scrivi un programma che accetti una sequenza di numeri interi separati da spazi. Utilizzando una lista, rimuovi i duplicati dalla sequenza e visualizza la lista risultante.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        // Chiedi all'utente di inserire una sequenza di numeri interi separati da spazi
+        Console.WriteLine("Inserisci una sequenza di numeri interi separati da spazi:");
+        string input = Console.ReadLine();
+
+        // Dividi la sequenza in numeri interi utilizzando uno spazio come delimitatore
+        string[] numeriStringa = input.Split(' ');
+
+        // Converte i numeri da stringhe a interi e li aggiunge alla lista
+        List<int> numeri = new List<int>();
+        foreach (string numeroStringa in numeriStringa)
+        {
+            int numero;
+            if (int.TryParse(numeroStringa, out numero))
+            {
+                numeri.Add(numero);
+            }
+            else
+            {
+                Console.WriteLine($"'{numeroStringa}' non è un numero intero valido e sarà ignorato.");
+            }
+        }
+
+        // Rimuovi i duplicati dalla lista
+        List<int> listaSenzaDuplicati = RimuoviDuplicati(numeri);
+
+        // Visualizza la lista risultante senza duplicati
+        Console.WriteLine("Lista senza duplicati:");
+        foreach (int numero in listaSenzaDuplicati)
+        {
+            Console.Write(numero + " ");
+        }
+    }
+
+    static List<int> RimuoviDuplicati(List<int> lista)
+    {
+        // Utilizza il metodo Distinct per rimuovere i duplicati dalla lista
+        return lista.Distinct().ToList();
+    }
+}
+
+
+//ex04: Conteggio delle Occorrenze
+//Data una lista di stringhe contenenti colori, scrivi un programma che conti quante volte appare ciascun colore nella lista e visualizzi i risultati.
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Lista di stringhe contenenti colori
+        List<string> colori = new List<string>()
+        {
+            "rosso", "verde", "blu", "rosso", "giallo", "verde", "rosso"
+        };
+
+        // Dizionario per memorizzare il conteggio di ogni colore
+        Dictionary<string, int> conteggioColori = ContaColori(colori);
+
+        // Visualizza il conteggio di ciascun colore
+        Console.WriteLine("Conteggio dei colori:");
+        foreach (var coppia in conteggioColori)
+        {
+            Console.WriteLine($"{coppia.Key}: {coppia.Value}");
+        }
+    }
+
+    static Dictionary<string, int> ContaColori(List<string> colori)
+    {
+        Dictionary<string, int> conteggio = new Dictionary<string, int>();
+
+        foreach (string colore in colori)
+        {
+            if (conteggio.ContainsKey(colore))
+            {
+                conteggio[colore]++;
+            }
+            else
+            {
+                conteggio[colore] = 1;
+            }
+        }
+
+        return conteggio;
+    }
+}
+
+
+//ex05: Ordinamento di Dictionary
+//Crea un dizionario che associ nomi di studenti a punteggi. Ordina il dizionario in base ai punteggi in modo decrescente e visualizza i risultati.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        // Creazione del dizionario studenti -> punteggi
+        Dictionary<string, int> dizionarioPunteggi = new Dictionary<string, int>()
+        {
+            {"Marco", 85},
+            {"Giulia", 92},
+            {"Luca", 78},
+            {"Anna", 88},
+            {"Simone", 90},
+            {"Elisa", 82}
+        };
+
+        // Ordinamento del dizionario in base ai punteggi in modo decrescente
+        var dizionarioOrdinato = dizionarioPunteggi.OrderByDescending(pair => pair.Value);
+
+        // Visualizzazione dei risultati
+        Console.WriteLine("Studenti ordinati per punteggio decrescente:");
+        foreach (var coppia in dizionarioOrdinato)
+        {
+            Console.WriteLine($"{coppia.Key}: {coppia.Value}");
+        }
+    }
+}
